@@ -5,7 +5,7 @@ async function verifySignature(publicKeyJWK, message, signature) {
   console.log(publicKeyJWK, message, signature);
   const publicKey = await crypto.subtle.importKey(
     "jwk",
-    publicKeyJWK,
+    JSON.parse(publicKeyJWK),
     { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
     false,
     ["verify"]
@@ -28,21 +28,22 @@ async function verifySignature(publicKeyJWK, message, signature) {
 
 function VerifySignature() {
   const [keys] = useLocalStorage("keys", {});
+  const [publicKeyJWK, setPublicKeyJWK] = useState(keys.publicKeyJWK);
   const [message, setMessage] = useState("");
   const [signature, setSignature] = useState("");
   const [verified, setVerified] = useState(false);
 
   return (
     <div className="page-container">
-      <h2>Sign Data</h2>
+      <h2>Verify Signature</h2>
 
       <div className="input-group">
         <label>Public Key:</label>
         <textarea
           rows={10}
           cols={100}
-          value={JSON.stringify(keys.publicKeyJWK, null, 2)}
-          onChange={(e) => setKeys({ ...keys, publicKeyJWK: e.target.value })}
+          value={publicKeyJWK}
+          onChange={(e) => setPublicKeyJWK(e.target.value)}
         />
       </div>
 
@@ -66,14 +67,14 @@ function VerifySignature() {
       </div>
 
       <button
-        disabled={!(keys.publicKeyJWK && message && signature)}
+        disabled={!(publicKeyJWK && message && signature)}
         onClick={() => {
-          verifySignature(keys.publicKeyJWK, message, signature).then((s) =>
+          verifySignature(publicKeyJWK, message, signature).then((s) =>
             setVerified(s)
           );
         }}
       >
-        Generate Signature
+        Verify Signature
       </button>
 
       <div className="result-display">
