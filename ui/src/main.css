@@ -1,0 +1,65 @@
+.nav-menu {
+  background-color: #f0f0f0;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.nav-menu a {
+  margin-right: 1rem;
+  text-decoration: none;
+  color: #333;
+  padding: 0.5rem 1rem;
+}
+
+.nav-menu a:hover {
+  background-color: #ddd;
+  border-radius: 4px;
+}
+
+.page-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.input-group input, 
+.input-group textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.result-display {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f8f8f8;
+  border-radius: 4px;
+  word-break: break-all;
+} 
