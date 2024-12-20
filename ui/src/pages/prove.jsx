@@ -14,13 +14,13 @@ async function generateProof(
   const messageUint8Array = new Uint8Array(20);
   messageUint8Array.set(new TextEncoder().encode(message));
 
-  // const revealedDataUint8Array = new Uint8Array(3);
-  // revealedDataUint8Array.set(new TextEncoder().encode(revealedData));
+  const revealedDataUint8Array = new Uint8Array(3);
+  revealedDataUint8Array.set(new TextEncoder().encode(revealedData));
 
   const input = {
     signed_data: Array.from(messageUint8Array).map((s) => s.toString()),
     signed_data_len: message.length,
-    // revealed_data: revealedData.split("").map((s) => s.charCodeAt(0)),
+    revealed_data: revealedData.split("").map((s) => s.charCodeAt(0)),
     pubkey_modulus_limbs: splitBigIntToLimbs(publicKeyBigInt, 120, 18).map(
       (s) => s.toString()
     ),
@@ -52,7 +52,7 @@ function Prove() {
   const [redcParamBigInt, setRedcParamBigInt] = useState(keys.redcParam);
   const [message, setMessage] = useState("");
   const [signatureBigInt, setSignatureBigInt] = useState("");
-  // const [revealedData, setRevealedData] = useState("");
+  const [revealedData, setRevealedData] = useState("");
 
   const [proof, setProof] = useState([]);
   const [publicInputs, setPublicInputs] = useState([]);
@@ -74,7 +74,7 @@ function Prove() {
         />
       </div>
 
-      {/* <div className="input-group">
+      <div className="input-group">
         <label>Revealed Data (public input)</label>
         <input
           type="text"
@@ -82,7 +82,7 @@ function Prove() {
           onChange={(e) => setRevealedData(e.target.value)}
           maxLength={3}
         />
-      </div> */}
+      </div>
 
       <div className="input-group">
         <label>Public Key Modulus (public input)</label>
@@ -118,7 +118,7 @@ function Prove() {
         disabled={isProving}
         onClick={() => {
           setIsProving(true);
-          generateProof(pubkeyModulusBigInt, redcParamBigInt, signatureBigInt, message, /* revealedData */)
+          generateProof(pubkeyModulusBigInt, redcParamBigInt, signatureBigInt, message, revealedData)
             .then(({ proof, publicInputs, provingTime }) => {
               console.log(proof, provingTime);
               setProof(proof);
@@ -164,3 +164,5 @@ export function splitBigIntToLimbs(bigInt, bitSize, numLimbs) {
   }
   return limbs;
 }
+
+// 120 bits * 18 libs > 2048
