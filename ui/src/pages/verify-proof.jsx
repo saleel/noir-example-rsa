@@ -10,8 +10,6 @@ async function verifyProof(proof, publicInputs) {
   const proofParsed = Uint8Array.from(JSON.parse(proof) );
   const publicInputsParsed = JSON.parse(publicInputs);
 
-  console.log(proofParsed, publicInputsParsed);
-
   // Generate witness and prove
   const startTime = performance.now();
   const verified = await backend.verifyProof({ proof: proofParsed, publicInputs: publicInputsParsed });

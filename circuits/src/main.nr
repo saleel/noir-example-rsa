@@ -1,9 +1,9 @@
 use std::hash::sha256_var;
 use bignum::{params::BigNumParams, RuntimeBigNum};
 use rsa::{rsa::verify_sha256_pkcs1v15, types::RBN2048};
-// use string_search::{StringBody64, SubString32};
+use string_search::{StringBody64, SubString32};
 
-global MAX_DATA_LENGTH: u32 = 100;
+global MAX_DATA_LENGTH: u32 = 20;
 
 
 fn main(
@@ -11,7 +11,8 @@ fn main(
   signed_data_len: u32,
   pubkey_modulus_limbs: pub [Field; 18],
   redc_params_limbs: [Field; 18],
-  signature_limbs: [Field; 18]
+  signature_limbs: [Field; 18],
+  revealed_data: pub [u8; 3],
 ) {       
   let mut data_hash: [u8; 32] = sha256_var(signed_data, signed_data_len as u64);
 
@@ -24,8 +25,8 @@ fn main(
   assert(verify_sha256_pkcs1v15(data_hash, signature, 65537));
 
 
-  // let haystack: StringBody64 = StringBody64::new(signed_data.storage(), signed_data.len());
-  // let needle: SubString32 = SubString32::new(city, city.len());
-  // let (result, match_position): (bool, u32) = haystack.substring_match(needle);
-  // assert(result);
+  let haystack: StringBody64 = StringBody64::new(signed_data, signed_data_len);
+  let needle: SubString32 = SubString32::new(revealed_data, revealed_data.len());
+  let (result, match_position): (bool, u32) = haystack.substring_match(needle);
+  assert(result);
 }
