@@ -2,7 +2,7 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import { useState } from "react";
 import { Noir } from "@noir-lang/noir_js";
 import { UltraHonkBackend } from "@aztec/bb.js";
-import circuit from "../../assets/circuit.json";
+import circuit from "../../../circuits/target/rsa_sample.json";
 
 async function generateProof(
   publicKeyBigInt,
@@ -11,16 +11,17 @@ async function generateProof(
   message,
   revealedData
 ) {
-  const messageUint8Array = new Uint8Array(20);
+  const messageUint8Array = new Uint8Array(64);
   messageUint8Array.set(new TextEncoder().encode(message));
 
-  const revealedDataUint8Array = new Uint8Array(3);
+  const revealedDataUint8Array = new Uint8Array(20);
   revealedDataUint8Array.set(new TextEncoder().encode(revealedData));
 
   const input = {
     signed_data: Array.from(messageUint8Array).map((s) => s.toString()),
     signed_data_len: message.length,
-    revealed_data: revealedData.split("").map((s) => s.charCodeAt(0)),
+    revealed_data: Array.from(revealedDataUint8Array).map((s) => s.toString()),
+    revealed_data_len: revealedData.length,
     pubkey_modulus_limbs: splitBigIntToLimbs(publicKeyBigInt, 120, 18).map(
       (s) => s.toString()
     ),
@@ -31,6 +32,8 @@ async function generateProof(
       s.toString()
     ),
   };
+
+  console.log(input);
 
   const noir = new Noir(circuit);
   const backend = new UltraHonkBackend(circuit.bytecode);
@@ -70,7 +73,7 @@ function Prove() {
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          maxLength={20}
+          maxLength={64}
         />
       </div>
 
@@ -80,7 +83,7 @@ function Prove() {
           type="text"
           value={revealedData}
           onChange={(e) => setRevealedData(e.target.value)}
-          maxLength={3}
+          maxLength={20}
         />
       </div>
 

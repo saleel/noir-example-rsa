@@ -28,7 +28,7 @@ async function verifySignature(publicKeyJWK, message, signature) {
 
 function VerifySignature() {
   const [keys] = useLocalStorage("keys", {});
-  const [publicKeyJWK, setPublicKeyJWK] = useState(keys.publicKeyJWK);
+  const [publicKeyJWK, setPublicKeyJWK] = useState(JSON.stringify(keys.publicKeyJWK, null, 2));
   const [message, setMessage] = useState("");
   const [signature, setSignature] = useState("");
   const [verified, setVerified] = useState(false);

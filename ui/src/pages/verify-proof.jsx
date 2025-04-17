@@ -2,7 +2,8 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import { useState } from "react";
 import { Noir } from "@noir-lang/noir_js";
 import { UltraHonkBackend } from "@aztec/bb.js";
-import circuit from "../../assets/circuit.json";
+import circuit from "../../../circuits/target/rsa_sample.json";
+
 
 async function verifyProof(proof, publicInputs) {
   const backend = new UltraHonkBackend(circuit.bytecode);
